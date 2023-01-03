@@ -1,12 +1,11 @@
 package tests;
 
-import personnes.Personne;
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Activity {
+public class Activity implements Serializable {
 
     // Variables
 

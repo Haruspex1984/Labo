@@ -1,11 +1,15 @@
-package personnes;
+package tests;
 
-public class Personne {
+import java.io.Serializable;
+
+public class Personne implements Serializable {
 
     // Variables d'instances
 
     private String name = "";
     private String clubName = "";
+
+
 
     // Constructeur
 

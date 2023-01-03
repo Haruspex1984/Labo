@@ -1,9 +1,9 @@
 package tests;
 
-import personnes.Personne;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         Activity activity = new Activity();
         VueActivite vue = new VueActivite(activity);
@@ -12,20 +12,36 @@ public class Main {
 
         vue.welcome();
 
-        activity.setNom("Football");
-        activity.setStartTime(2022,12,31,18,30);
-        activity.setDuration(3);
-        activity.setEndTime();
+//        activity.setNom("Football");
+//        activity.setStartTime(2022,12,31,18,30);
+//        activity.setDuration(3);
+//        activity.setEndTime();
+//
+//        Personne personne1 = new Personne("Jean","Java Team");
+//        Personne personne2 = new Personne("Charlotte","Forem");
+//
+//        activity.ajouterPersonneListe(personne1);
+//        activity.ajouterPersonneListe(personne2);
+//
+//        calendrier.ajouterActivite(activity);
+//
+//        vue.afficherActivite(calendrier.getValueByKey(0));
+//
+//        FileOutputStream fos = new FileOutputStream("calendrier.bin");
+//        ObjectOutputStream oos = new ObjectOutputStream(fos);
+//        oos.writeObject(calendrier);
+//        fos.close();
+//        oos.close();
 
-        Personne personne1 = new Personne("Jean","Java Team");
-        Personne personne2 = new Personne("Charlotte","Forem");
+        FileInputStream fis = new FileInputStream("calendrier.bin");
+        ObjectInputStream ois = new ObjectInputStream(fis);
 
-        activity.ajouterPersonneListe(personne1);
-        activity.ajouterPersonneListe(personne2);
+        Calendrier calendrier1 = (Calendrier) ois.readObject();
 
-        calendrier.ajouterActivite(activity);
+        ois.close();
+        fis.close();
 
-        vue.afficherActivite(calendrier.getValueByKey(0));
+        vue.afficherActivite(calendrier1.getValueByKey(0));
 
 
     }

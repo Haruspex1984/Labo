@@ -1,11 +1,10 @@
 package tests;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Calendrier {
-
-    VueActivite vue;
+public class Calendrier implements Serializable {
 
     private int id;
 
