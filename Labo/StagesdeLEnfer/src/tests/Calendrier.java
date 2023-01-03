@@ -1,31 +1,29 @@
 package tests;
 
-import java.io.Serializable;
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Calendrier implements Serializable {
 
-    private int id;
 
-    private Map<Integer, Activity> calendrier = new TreeMap<>();
+    private Map<LocalDateTime, Activity> calendrier = new TreeMap<>();
+
 
     public void ajouterActivite(Activity activity) {
-        calendrier.put(id, activity);
-        id++;
+        calendrier.put(activity.getStartTime(), activity);
+
     }
 
-    public void retirerActivite(int id) {
-        calendrier.remove(id);
-        this.id--;
+    public void afficherMap(){
+        for (Map.Entry<LocalDateTime, Activity>
+                entry : calendrier.entrySet())
+            System.out.println(
+                    "[" + entry.getKey()
+                            + ", " + entry.getValue() + "]");
+
     }
-
-    public Activity getValueByKey(int id){
-        return calendrier.get(id);
-    }
-
-
-
 
 }
 

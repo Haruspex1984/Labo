@@ -2,6 +2,7 @@ package tests;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ public class Activity implements Serializable {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int duration;
+    private int participants = 0;
     private Set<Personne> listeParticipants = new HashSet<>();
 
     // Constructeur
@@ -27,9 +29,9 @@ public class Activity implements Serializable {
         this.nom = nom;
     }
 
-    public LocalDateTime setStartTime(int year, int month, int day, int hour, int minute) {
-        startTime = LocalDateTime.of(year, month, day, hour, minute);
-        return startTime;
+    public void setStartTime(String date) {
+        DateTimeFormatter monFormateur = DateTimeFormatter.ofPattern("dd/MM/yyyy HH':'mm");
+        startTime = LocalDateTime.parse(date,monFormateur);
     }
 
     public void setEndTime() {
@@ -60,6 +62,11 @@ public class Activity implements Serializable {
 
     public void ajouterPersonneListe(Personne p) {
         listeParticipants.add(p);
+        participants++;
+    }
+
+    public int getParticipants() {
+        return participants;
     }
 
 
