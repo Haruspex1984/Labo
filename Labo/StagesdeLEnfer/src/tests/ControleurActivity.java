@@ -13,6 +13,10 @@ public class ControleurActivity {
     private DateTimeFormatter monFormateur = DateTimeFormatter.ofPattern("dd/MM/yyyy HH':'mm");
     private Activity activity;
 
+    Personne personne = new Personne();
+    ControleurPersonne controleurPersonne = new ControleurPersonne(personne);
+
+
     ControleurActivity(Activity activity) {
         this.activity = activity;
     }
@@ -66,7 +70,36 @@ public class ControleurActivity {
         setDate();
         setDuration();
         activity.setEndTime();
+    }
 
+    public void menuActivite(){
+
+        int userChoice =0;
+
+        while (userChoice != 5) {
+            System.out.println("""
+                1. Créer une activité.
+                2. Modifier une activité.
+                3. Supprimer une activité.
+                4. Prendre les présences.
+                5. Quitter. 
+                """);
+            userChoice = Integer.parseInt(input.read("Choix : "));
+            switch (userChoice) {
+                case 1:
+                    newActivity();
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                    System.err.println("En travaux");
+                    break;
+                case 5:
+                    break;
+                default:
+                    System.err.println("Choix invalide");
+            }
+        }
 
     }
 }
