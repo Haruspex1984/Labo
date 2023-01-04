@@ -4,11 +4,10 @@ import java.time.format.DateTimeFormatter;
 
 public class VueActivite {
 
-    private Activity model;
+    private Activity activity;
 
-
-    public VueActivite(Activity model){
-        this.model = model;
+    public VueActivite(Activity activity){
+        this.activity = activity;
     }
     private DateTimeFormatter monFormateur = DateTimeFormatter.ofPattern("dd/MM/yyyy à HH'h'mm");
 

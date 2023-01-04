@@ -20,9 +20,6 @@ public class Activity implements Serializable {
     // Constructeur
 
 
-
-
-
     // Méthodes
 
     public void setNom(String nom) {
@@ -31,7 +28,7 @@ public class Activity implements Serializable {
 
     public void setStartTime(String date) {
         DateTimeFormatter monFormateur = DateTimeFormatter.ofPattern("dd/MM/yyyy HH':'mm");
-        startTime = LocalDateTime.parse(date,monFormateur);
+        startTime = LocalDateTime.parse(date, monFormateur);
     }
 
     public void setEndTime() {
@@ -49,14 +46,16 @@ public class Activity implements Serializable {
     public LocalDateTime getEndTime() {
         return endTime;
     }
+
     public String getNom() {
         return nom;
     }
+
     public int getDuration() {
         return duration;
     }
 
-    public Set<Personne> getListeParticipants(){
+    public Set<Personne> getListeParticipants() {
         return this.listeParticipants;
     }
 
@@ -68,7 +67,6 @@ public class Activity implements Serializable {
     public int getParticipants() {
         return participants;
     }
-
 
 
 }

@@ -1,46 +1,39 @@
 package tests;
 
-import java.time.LocalDateTime;
+import input.ScannerInput;
+
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ControleurActivity {
 
-    Scanner scan = new Scanner(System.in);
+    private static ScannerInput input = new ScannerInput();
+
     private DateTimeFormatter monFormateur = DateTimeFormatter.ofPattern("dd/MM/yyyy HH':'mm");
     private Activity activity;
-    private VueActivite vue;
-    private Calendrier calendrier;
 
-    ControleurActivity(VueActivite vue, Activity activity, Calendrier calendrier) {
+    ControleurActivity(Activity activity) {
         this.activity = activity;
-        this.vue = vue;
-        this.calendrier = calendrier;
     }
 
     private void setDate() {
         Boolean dateValid = false;
-        System.out.println("Date et heure de début de l'activité au format jj/mm/aaaa hh:mm : ");
         while (!dateValid) {
             try {
-                String dateUser = scan.nextLine();
-                activity.setStartTime(dateUser);
+                activity.setStartTime(input.read("Date et heure de début de l'activité au format jj/mm/aaaa hh:mm : "));
                 dateValid = true;
             } catch (Exception e) {
-                System.out.println("Date invalide. Veuillez réessayer : ");
+                System.err.println("Date invalide. Veuillez réessayer : ");
             }
         }
     }
 
     private void setDuration() {
         Boolean durationValid = false;
-        System.out.println("Durée de l'activité en heures : ");
         while (!durationValid) {
             try {
-                int duration = Integer.parseInt(scan.nextLine());
+                int duration = Integer.parseInt(input.read("Durée de l'activité en heures : "));
                 activity.setDuration(duration);
                 durationValid = true;
             } catch (Exception e) {
@@ -56,10 +49,8 @@ public class ControleurActivity {
         String regex = "^[a-zA-ZÀ-ÿ\\s]+$";
         Pattern pattern = Pattern.compile(regex);
         String name = "";
-        System.out.println("Nom de l'activité : ");
-
         while (!nameValid) {
-            name = scan.nextLine();
+            name = input.read("Nom de l'activité : ");
             Matcher matcher = pattern.matcher(name);
             if (matcher.find()) {
                 nameValid = true;
@@ -70,13 +61,13 @@ public class ControleurActivity {
         activity.setNom(name);
     }
 
-    public void run() {
+    public void newActivity() {
         setName();
         setDate();
         setDuration();
         activity.setEndTime();
-        vue.afficherActivite(activity);
-        calendrier.ajouterActivite(activity);
+
+
     }
 }
 

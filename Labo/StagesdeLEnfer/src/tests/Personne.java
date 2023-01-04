@@ -10,16 +10,18 @@ public class Personne implements Serializable {
     private String clubName = "";
 
 
-
     // Constructeur
-
-    public Personne(String name,String clubName){
-        this.name = name;
-        this.clubName = clubName;
-    }
 
 
     // Méthodes
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
 
     public String getName() {
         return name;
