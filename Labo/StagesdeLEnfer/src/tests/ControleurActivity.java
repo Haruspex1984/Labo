@@ -13,12 +13,13 @@ public class ControleurActivity {
     private DateTimeFormatter monFormateur = DateTimeFormatter.ofPattern("dd/MM/yyyy HH':'mm");
     private Activity activity;
 
-    Personne personne = new Personne();
-    ControleurPersonne controleurPersonne = new ControleurPersonne(personne);
+    private Calendrier calendrier;
+    private VueActivite vueActivite = new VueActivite(activity);
 
 
-    ControleurActivity(Activity activity) {
+    ControleurActivity(Activity activity, Calendrier cal) {
         this.activity = activity;
+        this.calendrier = cal;
     }
 
     private void setDate() {
@@ -65,44 +66,96 @@ public class ControleurActivity {
         activity.setNom(name);
     }
 
-    public void newActivity() {
+    public void setActivity() {
         setName();
         setDate();
         setDuration();
         activity.setEndTime();
     }
 
-    public void menuActivite(){
+    public void newPersonne(Activity a) {
+        Personne personne = new Personne();
+        Boolean nameValid = false;
+        String regex = "^[a-zA-ZÀ-ÿ\\s]+$";
+        Pattern pattern = Pattern.compile(regex);
+        String name = "";
+        while (!nameValid) {
+            name = input.read("Nom de la personne : ");
+            Matcher matcher = pattern.matcher(name);
+            if (matcher.find()) {
+                nameValid = true;
+            } else {
+                System.err.println("Nom invalide, réessayez : ");
+            }
+        }
+        personne.setName(name);
+        nameValid = false;
+        name = "";
+        while (!nameValid) {
+            name = input.read("Club de la personne : ");
+            Matcher matcher = pattern.matcher(name);
+            if (matcher.find()) {
+                nameValid = true;
+            } else {
+                System.err.println("Nom invalide, réessayez : ");
+            }
+        }
+        personne.setClubName(name);
+        confirmationPersonne(personne);
+    }
 
-        int userChoice =0;
-
-        while (userChoice != 5) {
-            System.out.println("""
-                1. Créer une activité.
-                2. Modifier une activité.
-                3. Supprimer une activité.
-                4. Prendre les présences.
-                5. Quitter. 
-                """);
-            userChoice = Integer.parseInt(input.read("Choix : "));
+    public void confirmationPersonne(Personne p) {
+        Boolean confirmed = false;
+        int userChoice = 0;
+        while (!confirmed) {
+            userChoice = Integer.parseInt(input.read("""
+                    1. Valider.
+                    2. Annuler.
+                    """));
             switch (userChoice) {
                 case 1:
-                    newActivity();
+                    activity.ajouterPersonneListe(p);
+                    confirmed = true;
                     break;
                 case 2:
-                case 3:
-                case 4:
-                    System.err.println("En travaux");
-                    break;
-                case 5:
+                    confirmed = true;
                     break;
                 default:
-                    System.err.println("Choix invalide");
+                    System.out.println("Choix invalide");
             }
         }
 
     }
+
+    public void confirmationActivite(Activity a) {
+        Boolean confirmed = false;
+        int userChoice = 0;
+        while (!confirmed) {
+            vueActivite.afficherActivite(a);
+            System.out.println("Ces informations sont-elles correctes ?");
+            userChoice = Integer.parseInt(input.read("""
+                    1. Confirmer.
+                    2. Annuler.
+                    """));
+            switch (userChoice) {
+                case 1:
+                    calendrier.ajouterActivite(a);
+                    confirmed = true;
+                    break;
+                case 2:
+                    confirmed = true;
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+            }
+        }
+
+    }
+
 }
+
+
+
 
 
 

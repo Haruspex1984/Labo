@@ -14,10 +14,13 @@ public class Activity implements Serializable {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int duration;
-    private int participants = 0;
     private Set<Personne> listeParticipants = new HashSet<>();
+    private int participants = 0;
 
     // Constructeur
+
+
+
 
 
     // Méthodes
