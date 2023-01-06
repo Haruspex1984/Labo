@@ -1,4 +1,4 @@
-package tests;
+package Main;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,9 +18,6 @@ public class Activity implements Serializable {
     private int participants = 0;
 
     // Constructeur
-
-
-
 
 
     // Méthodes
@@ -65,6 +62,11 @@ public class Activity implements Serializable {
     public void ajouterPersonneListe(Personne p) {
         listeParticipants.add(p);
         participants++;
+    }
+
+    public void retirerPersonneListe(Personne p){
+        listeParticipants.remove(p);
+        participants--;
     }
 
     public int getParticipants() {
