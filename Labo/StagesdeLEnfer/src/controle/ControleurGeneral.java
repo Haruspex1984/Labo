@@ -5,12 +5,9 @@ import Main.*;
 import vues.VueActivite;
 import vues.VueCalendrier;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
-public class ControleurGeneral {
+public class ControleurGeneral{
 
     ScannerInput input = new ScannerInput();
     Calendrier calendrier = new Calendrier();
@@ -25,12 +22,13 @@ public class ControleurGeneral {
 
         int userChoice = 0;
 
-        while (userChoice != 4) {
+        while (userChoice != 5) {
             System.out.println("""
                     1. Activités.
                     2. Repas.
                     3. Logement.
-                    4. Sauvegarder et quitter. 
+                    4. Charger la sauvegarde.
+                    5. Sauvegarder et quitter. 
                     """);
             try {
                 userChoice = Integer.parseInt(input.read("Choix : "));
@@ -43,7 +41,10 @@ public class ControleurGeneral {
                         System.err.println("En travaux");
                         break;
                     case 4:
-                        sauvegarde(calendrier);
+                        calendrier = restauration();
+                    break;
+                    case 5:
+                        sauvegarde();
                         break;
                     default:
                         System.err.println("Choix invalide");
@@ -73,10 +74,10 @@ public class ControleurGeneral {
                     Activity activity = new Activity();
                     controleurActivity.setActivity(activity);
                     menuPersonne(controleurActivity, activity);
-                    controleurActivity.validationActivite(activity);
+                    controleurActivity.validationActivite(activity,calendrier);
                     break;
                 case 2:
-                    vueCalendrier.afficherCalendrier();
+                    vueCalendrier.afficherCalendrier(calendrier);
                     break;
                 case 3:
                 case 4:
@@ -124,12 +125,21 @@ public class ControleurGeneral {
 
         }
     }
-    public static void sauvegarde(Calendrier calendrier) throws IOException, IOException {
+    public void sauvegarde() throws IOException, IOException {
         FileOutputStream fos = new FileOutputStream("calendrier.bin");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(calendrier);
+        oos.writeObject(this.calendrier);
         oos.close();
         fos.close();
+    }
+
+    public Calendrier restauration() throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream("calendrier.bin");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        calendrier = (Calendrier) ois.readObject();
+        ois.close();
+        fis.close();
+        return calendrier;
     }
 }
 

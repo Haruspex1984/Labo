@@ -6,11 +6,12 @@ import Main.Calendrier;
 import Main.Personne;
 import vues.VueActivite;
 
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ControleurActivity {
+public class ControleurActivity{
 
     private static ScannerInput input = new ScannerInput();
 
@@ -128,7 +129,7 @@ public class ControleurActivity {
         }
     }
 
-    public void validationActivite(Activity activity) {
+    public void validationActivite(Activity activity,Calendrier calendrier) {
         Boolean validation = false;
         int userChoice = 0;
         System.out.println("Ces informations sont-elles correctes ?");

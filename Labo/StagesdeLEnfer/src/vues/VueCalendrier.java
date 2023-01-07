@@ -16,12 +16,12 @@ public class VueCalendrier {
         this.calendrier = c;
     }
 
-    public void afficherCalendrier() {
+    public void afficherCalendrier(Calendrier calendrier) {
         Set<Map.Entry<LocalDateTime, Activity>> entries = calendrier.getCalendrier().entrySet();
         int ind = 1;
         for (Map.Entry<LocalDateTime, Activity> entry : entries) {
             Activity value = entry.getValue();
-            String content = "| "+ind+". "+value.getStartTime().format(monFormateur)+" : "+value.getNom()+" |";
+            String content = "| "+ind+". "+value.getStartTime().format(monFormateur)+" : "+value.getNom()+" avec "+value.getParticipants()+" participant(s)"+" |";
             int lenght = content.length();
             String deco = "";
             for(int i = 0;i<lenght;i++){
