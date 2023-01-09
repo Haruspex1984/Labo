@@ -12,6 +12,8 @@ public class Personne implements Serializable, Comparable<Personne> {
     private String name = "";
     private String clubName = "";
 
+
+
     private Set<Activity> listeActivites = new HashSet<>();
 
     // Comparateur
@@ -45,6 +47,9 @@ public class Personne implements Serializable, Comparable<Personne> {
 
     // Méthodes
 
+    public Set<Activity> getListeActivites() {
+        return listeActivites;
+    }
     public void setName(String name) {
         this.name = name;
     }

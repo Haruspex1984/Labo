@@ -7,7 +7,7 @@ import vues.VueCalendrier;
 
 import java.io.*;
 
-public class ControleurGeneral {
+public class ControleurGeneral implements Serializable {
     ScannerInput input = new ScannerInput();
     Calendrier calendrier = new Calendrier();
     ControleurActivity controleurActivity = new ControleurActivity(calendrier);
@@ -111,7 +111,8 @@ public class ControleurGeneral {
             userChoice = Integer.parseInt(input.read("Choix : "));
             switch (userChoice) {
                 case 1:
-                    vueCalendrier.afficherListeGlobale();
+                    System.out.println("Test");
+                    vueCalendrier.afficherListeGlobale(calendrier);
                     break;
                 case 2:
                     break;

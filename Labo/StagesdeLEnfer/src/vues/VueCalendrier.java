@@ -43,12 +43,13 @@ public class VueCalendrier {
 
     }
 
-    public void afficherListeGlobale() {
-        Iterator<Personne> it = calendrier.getListeGlobale().iterator();
-        int ind = 1;
-        while (it.hasNext()) {
-            System.out.println(ind + ". " + it.next());
-            ind++;
+
+
+    public void afficherListeGlobale(Calendrier calendrier){
+        for (Personne p:calendrier.getListeGlobale()
+             ) {
+            System.out.println(p);
+
         }
     }
 

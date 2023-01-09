@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ControleurActivity {
+public class ControleurActivity implements Serializable{
 
     private static ScannerInput input = new ScannerInput();
 
