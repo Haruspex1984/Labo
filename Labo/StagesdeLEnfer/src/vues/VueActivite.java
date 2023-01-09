@@ -10,6 +10,24 @@ public class VueActivite {
 
     private DateTimeFormatter monFormateur = DateTimeFormatter.ofPattern("dd/MM/yyyy à HH'h'mm");
 
+    public void texteVert(String message) {
+        String code = "\u001B[32m.\u001B[0m";
+        String result = code.replace(".", message);
+        System.out.println(result);
+    }
+
+    public void texteRouge(String message) {
+        String code = "\u001B[31m.\u001B[0m";
+        String result = code.replace(".", message);
+        System.out.println(result);
+    }
+
+    public void texteBleu(String message) {
+        String code = "\u001B[34m.\u001B[0m";
+        String result = code.replace(".", message);
+        System.out.println(result);
+    }
+
     public void afficherActivite(Activity activity) {
         System.out.println("");
         System.out.println("Nom de l'activité : " + activity.getNom());
@@ -32,42 +50,35 @@ public class VueActivite {
 
     public void welcome() {
         System.out.println("""
-
-                                              _                      \s
-                    /\\                       | |                     \s
-                   /  \\   __ _  ___ _ __   __| | __ _                \s
-                  / /\\ \\ / _` |/ _ \\ '_ \\ / _` |/ _` |               \s
-                 / ____ \\ (_| |  __/ | | | (_| | (_| |               \s
-                /_/  __\\_\\__, |\\___|_| |_|\\__,_|\\__,_|      __   ___ \s
-                |  \\/  |  __/ |                            /_ | / _ \\\s
-                | \\  / | |___/_ __   __ _  __ _  ___ _ __   | || | | |
-                | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '__|  | || | | |
-                | |  | | (_| | | | | (_| | (_| |  __/ |     | || |_| |
-                |_|  |_|\\__,_|_| |_|\\__,_|\\__, |\\___|_|     |_(_)___/\s
-                                           __/ |                     \s
-                                          |___/                      \s
-
+                                              _         __  __                                     __   ___ \s
+                    /\\                       | |       |  \\/  |                                   /_ | / _ \\\s
+                   /  \\   __ _  ___ _ __   __| | __ _  | \\  / | __ _ _ __   __ _  __ _  ___ _ __   | || | | |
+                  / /\\ \\ / _` |/ _ \\ '_ \\ / _` |/ _` | | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '__|  | || | | |
+                 / ____ \\ (_| |  __/ | | | (_| | (_| | | |  | | (_| | | | | (_| | (_| |  __/ |     | || |_| |
+                /_/    \\_\\__, |\\___|_| |_|\\__,_|\\__,_| |_|  |_|\\__,_|_| |_|\\__,_|\\__, |\\___|_|     |_(_)___/\s
+                          __/ |                                                   __/ |                     \s
+                         |___/                                                   |___/                      \s
                                """);
     }
 
-    public void textDecoration(String message){
-        message = "| "+message+" |";
+    public void textDecoration(String message) {
+        message = "| " + message + " |";
         int lenght = message.length();
         String deco = "";
-        for (int i=0;i<lenght;i++){
-            deco = deco+"-";
+        for (int i = 0; i < lenght; i++) {
+            deco = deco + "-";
         }
-        System.out.println(deco);
-        System.out.println(message);
-        System.out.println(deco);
+        texteBleu(deco);
+        texteBleu(message);
+        texteBleu(deco);
     }
 
-    public void errorDecoration(String message){
-        message = "| "+message+" |";
+    public void errorDecoration(String message) {
+        message = "| " + message + " |";
         int lenght = message.length();
         String deco = "";
-        for (int i=0;i<lenght;i++){
-            deco = deco+"-";
+        for (int i = 0; i < lenght; i++) {
+            deco = deco + "-";
         }
         System.err.println(deco);
         System.err.println(message);

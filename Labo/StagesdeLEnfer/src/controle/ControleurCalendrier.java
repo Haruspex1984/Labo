@@ -3,6 +3,7 @@ package controle;
 import Main.Activity;
 import Main.Calendrier;
 import input.ScannerInput;
+import vues.VueActivite;
 import vues.VueCalendrier;
 
 import java.io.Serializable;
@@ -16,16 +17,16 @@ public class ControleurCalendrier implements Serializable {
     VueCalendrier vue;
     ControleurActivity controleurActivity;
     Calendrier calendrier;
+    VueActivite vueActivite = new VueActivite();
 
     ControleurCalendrier(VueCalendrier vue, Calendrier calendrier, ControleurActivity controleurActivity) {
         this.vue = vue;
         this.calendrier = calendrier;
         this.controleurActivity = controleurActivity;
     }
-
     public void modifierActivite(Calendrier calendrier) {
         if (calendrier.getCalendrier().isEmpty()) {
-            vue.textDecoration("Le calendrier ne contient aucune activité");
+            vue.errorDecoration("Le calendrier ne contient aucune activité");
         } else {
             Set<Map.Entry<LocalDateTime, Activity>> entries = calendrier.getCalendrier().entrySet();
             vue.afficherCalendrier(calendrier);
@@ -36,7 +37,9 @@ public class ControleurCalendrier implements Serializable {
                 if (positionActuelle == positionVoulue) {
                     activity = entry.getValue();
                     int userChoice = 0;
-                    while (userChoice != 6) {
+                    Boolean validation = false;
+                    while (!validation) {
+                        vueActivite.afficherActivite(activity);
                         System.out.println("Que souhaitez-vous modifier ?");
                         System.out.println("""
                                 1. Nom.
@@ -50,21 +53,31 @@ public class ControleurCalendrier implements Serializable {
                         switch (userChoice) {
                             case 1:
                                 controleurActivity.setName(activity);
+                                controleurActivity.validationActivite(activity, calendrier);
+                                validation = true;
                                 break;
                             case 2:
                                 controleurActivity.setDate(activity);
+                                controleurActivity.validationActivite(activity, calendrier);
+                                validation = true;
                                 break;
                             case 3:
                                 controleurActivity.setDuration(activity);
+                                controleurActivity.validationActivite(activity, calendrier);
+                                validation = true;
                                 break;
                             case 4:
                                 controleurActivity.menuPersonne(activity);
+                                controleurActivity.validationActivite(activity, calendrier);
+                                validation = true;
                                 break;
                             case 5:
                                 controleurActivity.setActivity(activity);
+                                controleurActivity.validationActivite(activity, calendrier);
+                                validation = true;
                                 break;
                             case 6:
-                                controleurActivity.validationActivite(activity, calendrier);
+                                validation = true;
                                 break;
                             default:
                                 System.err.println("Choix invalide");
@@ -72,27 +85,28 @@ public class ControleurCalendrier implements Serializable {
 
 
                     }
+
                 }
                 positionActuelle++;
             }
         }
     }
-
     public void supprimerActivite(Calendrier calendrier) {
         Activity activity;
+        int id;
         if (calendrier.getCalendrier().isEmpty()) {
-            vue.textDecoration("Le calendrier ne contient aucune activité");
+            vue.errorDecoration("Le calendrier ne contient aucune activité");
         } else {
-            activity = getActivityById(calendrier);
+            vue.afficherCalendrier(calendrier);
+            id = Integer.parseInt(input.read("Quelle activité souhaitez-vous supprimer ? "));
+            activity = getActivityById(id, calendrier);
             calendrier.supprimerActivite(activity);
         }
 
     }
-
-    public Activity getActivityById(Calendrier calendrier) {
+    public Activity getActivityById(int id, Calendrier calendrier) {
         Set<Map.Entry<LocalDateTime, Activity>> entries = calendrier.getCalendrier().entrySet();
-        vue.afficherCalendrier(calendrier);
-        int positionVoulue = Integer.parseInt(input.read("Entrez le numéro de l'activité à traiter : "));
+        int positionVoulue = id;
         int positionActuelle = 1;
         Activity activity = null;
         for (Map.Entry<LocalDateTime, Activity> entry : entries) {
@@ -103,6 +117,31 @@ public class ControleurCalendrier implements Serializable {
 
         }
         return activity;
+    }
+
+    public void calendrierDetails(Calendrier calendrier) {
+        int userChoice = 0;
+        vue.afficherCalendrier(calendrier);
+        while (userChoice != 2) {
+            System.out.println("""
+                    1. Afficher les détails.
+                    2. Revenir au menu.""");
+            userChoice = Integer.parseInt(input.read("Choix : "));
+            int id = 0;
+            switch (userChoice) {
+                case 1:
+                    id = Integer.parseInt(input.read("Numéro de l'activité : "));
+                    Activity activity = getActivityById(id, calendrier);
+                    vueActivite.afficherActivite(activity);
+                    break;
+                case 2:
+                    break;
+            }
+
+
+        }
+
+
     }
 
 }

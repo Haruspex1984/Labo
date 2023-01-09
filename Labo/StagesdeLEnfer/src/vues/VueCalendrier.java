@@ -26,18 +26,21 @@ public class VueCalendrier {
     // Méthodes
 
     public void afficherCalendrier(Calendrier calendrier) {
+        Activity value;
         if (!calendrier.getCalendrier().isEmpty()) {
             Set<Map.Entry<LocalDateTime, Activity>> entries = calendrier.getCalendrier().entrySet();
             int ind = 1;
             for (Map.Entry<LocalDateTime, Activity> entry : entries) {
-                Activity value = entry.getValue();
+                value = entry.getValue();
                 String content = ind + ". " + value.getStartTime().format(monFormateur) + " : " + value.getNom() + " avec " + value.getParticipants() + " participant(s)";
                 textDecoration(content);
                 ind++;
             }
         } else {
-            textDecoration("Le calendrier est actuellement vide");
+            errorDecoration("Le calendrier est actuellement vide");
         }
+
+
     }
 
     public void afficherListeGlobale() {
@@ -59,5 +62,17 @@ public class VueCalendrier {
         System.out.println(deco);
         System.out.println(message);
         System.out.println(deco);
+    }
+
+    public void errorDecoration(String message) {
+        message = "| " + message + " |";
+        int lenght = message.length();
+        String deco = "";
+        for (int i = 0; i < lenght; i++) {
+            deco = deco + "-";
+        }
+        System.err.println(deco);
+        System.err.println(message);
+        System.err.println(deco);
     }
 }

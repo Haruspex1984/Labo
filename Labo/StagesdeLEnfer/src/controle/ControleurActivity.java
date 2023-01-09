@@ -7,6 +7,7 @@ import Main.Personne;
 import vues.VueActivite;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,6 +108,7 @@ public class ControleurActivity {
         setDate(activity);
         setDuration(activity);
         activity.setEndTime();
+        menuPersonne(activity);
     }
 
     public void menuPersonne(Activity activity) {
@@ -151,11 +153,10 @@ public class ControleurActivity {
     public void validationPersonne(Activity activity, Personne p) {
         Boolean validation = false;
         int userChoice = 0;
-        String content = "Inscrire " + p.getName().toUpperCase() + " du club '" + p.getClubName().toUpperCase()+" à l'activité '"+activity.getNom()+"' ?";
+        String content = "Inscrire '" + p.getName().toUpperCase() + "' du club '" + p.getClubName().toUpperCase()+"' à l'activité '"+activity.getNom().toUpperCase()+"' ?";
         vueActivite.textDecoration(content);
-        System.out.println("""
-                1. Valider
-                2. Annuler""");
+        vueActivite.texteVert("1. Valider");
+        vueActivite.texteRouge("2. Annuler");
         while (!validation) {
             userChoice = Integer.parseInt(input.read("Choix : "));
             switch (userChoice) {
@@ -182,18 +183,19 @@ public class ControleurActivity {
         System.out.println("");
         vueActivite.afficherActivite(activity);
         System.out.println("");
-        System.out.println("""
-                1. Valider.
-                2. Annuler.""");
+        vueActivite.texteVert("1. Valider");
+        vueActivite.texteRouge("2. Annuler");
+        System.out.println("");
         while (!validation) {
             try {
                 userChoice = Integer.parseInt(input.read("Choix : "));
             } catch (Exception e) {
-                System.err.println("Veuillez rentrer un chiffre");
+                System.err.println("Veuillez rentrer un chiffre !");
             }
             switch (userChoice) {
                 case 1:
                     calendrier.ajouterActivite(activity);
+                    vueActivite.texteVert("L'activité a été ajoutée au calendrier");
                     validation = true;
                     break;
                 case 2:
