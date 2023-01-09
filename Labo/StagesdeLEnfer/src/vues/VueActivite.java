@@ -21,34 +21,57 @@ public class VueActivite {
         System.out.println("");
     }
 
-
     public void afficherListeParticipants(Activity activity) {
         Iterator<Personne> it = activity.getListeParticipants().iterator();
-        int ind = 0;
+        int ind = 1;
         while (it.hasNext()) {
             System.out.println(ind + ". " + it.next());
             ind++;
-
         }
-
     }
 
     public void welcome() {
         System.out.println("""
-                  ___                           _              \s
-                 / _ \\                         | |             \s
-                / /_\\ \\  __ _   ___  _ __    __| |  __ _       \s
-                |  _  | / _` | / _ \\| '_ \\  / _` | / _` |      \s
-                | | | || (_| ||  __/| | | || (_| || (_| |      \s
-                \\_| |_/_\\__, | \\___||_| |_| \\__,_| \\__,_|      \s
-                |  \\/  | __/ |                                 \s
-                | .  . ||___/_  _ __    __ _   __ _   ___  _ __\s
-                | |\\/| | / _` || '_ \\  / _` | / _` | / _ \\| '__|
-                | |  | || (_| || | | || (_| || (_| ||  __/| |  \s
-                \\_|  |_/ \\__,_||_| |_| \\__,_| \\__, | \\___||_|  \s
-                                               __/ |           \s
-                                              |___/            \s
-                """);
+
+                                              _                      \s
+                    /\\                       | |                     \s
+                   /  \\   __ _  ___ _ __   __| | __ _                \s
+                  / /\\ \\ / _` |/ _ \\ '_ \\ / _` |/ _` |               \s
+                 / ____ \\ (_| |  __/ | | | (_| | (_| |               \s
+                /_/  __\\_\\__, |\\___|_| |_|\\__,_|\\__,_|      __   ___ \s
+                |  \\/  |  __/ |                            /_ | / _ \\\s
+                | \\  / | |___/_ __   __ _  __ _  ___ _ __   | || | | |
+                | |\\/| |/ _` | '_ \\ / _` |/ _` |/ _ \\ '__|  | || | | |
+                | |  | | (_| | | | | (_| | (_| |  __/ |     | || |_| |
+                |_|  |_|\\__,_|_| |_|\\__,_|\\__, |\\___|_|     |_(_)___/\s
+                                           __/ |                     \s
+                                          |___/                      \s
+
+                               """);
+    }
+
+    public void textDecoration(String message){
+        message = "| "+message+" |";
+        int lenght = message.length();
+        String deco = "";
+        for (int i=0;i<lenght;i++){
+            deco = deco+"-";
+        }
+        System.out.println(deco);
+        System.out.println(message);
+        System.out.println(deco);
+    }
+
+    public void errorDecoration(String message){
+        message = "| "+message+" |";
+        int lenght = message.length();
+        String deco = "";
+        for (int i=0;i<lenght;i++){
+            deco = deco+"-";
+        }
+        System.err.println(deco);
+        System.err.println(message);
+        System.err.println(deco);
     }
 }
 

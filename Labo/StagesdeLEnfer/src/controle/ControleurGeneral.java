@@ -7,14 +7,14 @@ import vues.VueCalendrier;
 
 import java.io.*;
 
-public class ControleurGeneral{
-
+public class ControleurGeneral {
     ScannerInput input = new ScannerInput();
     Calendrier calendrier = new Calendrier();
     ControleurActivity controleurActivity = new ControleurActivity(calendrier);
     VueCalendrier vueCalendrier = new VueCalendrier(calendrier);
     VueActivite vueActivite = new VueActivite();
 
+    ControleurCalendrier controleurCalendrier = new ControleurCalendrier(vueCalendrier, calendrier,controleurActivity);
 
     public void menuGeneral() {
 
@@ -22,32 +22,33 @@ public class ControleurGeneral{
 
         int userChoice = 0;
 
-        while (userChoice != 5) {
+        while (userChoice != 4 && userChoice != 5) {
             System.out.println("""
-                    1. Activités.
-                    2. Repas.
-                    3. Logement.
-                    4. Charger la sauvegarde.
-                    5. Sauvegarder et quitter. 
+                    1. Accéder au calendrier des activités.
+                    2. Accéder à la gestion des stagiaires. 
+                    3. Charger la sauvegarde.
+                    4. Sauvegarder et quitter.
+                    5. Quitter. 
                     """);
             try {
                 userChoice = Integer.parseInt(input.read("Choix : "));
                 switch (userChoice) {
                     case 1:
-                        menuActivite();
+                        menuCalendrier();
                         break;
                     case 2:
+                        menuStagiaires();
+                        break;
                     case 3:
-                        System.err.println("En travaux");
+                        calendrier = restauration();
                         break;
                     case 4:
-                        calendrier = restauration();
-                    break;
-                    case 5:
                         sauvegarde();
                         break;
+                    case 5:
+                        break;
                     default:
-                        System.err.println("Choix invalide");
+                        vueActivite.errorDecoration("Choix invalide");
                 }
 
             } catch (Exception e) {
@@ -55,76 +56,116 @@ public class ControleurGeneral{
             }
         }
     }
-    public void menuActivite() {
+
+    public void menuCalendrier() {
 
         int userChoice = 0;
 
         while (userChoice != 5) {
             System.out.println("""
-                    
-                    1. Créer une activité.
-                    2. Voir les activités.
-                    3. Supprimer une activité.
-                    4. Prendre les présences.
-                    5. Revenir au menu général. 
-                    """);
+                1. Afficher le calendrier.
+                2. Ajouter une activité.
+                3. Modifier une activité.
+                4. Supprimer une activité.
+                5. Revenir au menu général.
+                """);
             userChoice = Integer.parseInt(input.read("Choix : "));
             switch (userChoice) {
                 case 1:
-                    Activity activity = new Activity();
-                    controleurActivity.setActivity(activity);
-                    menuPersonne(controleurActivity, activity);
-                    controleurActivity.validationActivite(activity,calendrier);
-                    break;
-                case 2:
                     vueCalendrier.afficherCalendrier(calendrier);
                     break;
+                case 2:
+                    Activity activity = new Activity();
+                    controleurActivity.setActivity(activity);
+                    controleurActivity.menuPersonne(activity);
+                    controleurActivity.validationActivite(activity, calendrier);
+                    break;
                 case 3:
+                    controleurCalendrier.modifierActivite(calendrier);
+                    break;
                 case 4:
-                    System.err.println("En travaux");
+                    controleurCalendrier.supprimerActivite(calendrier);
                     break;
                 case 5:
                     break;
                 default:
-                    System.err.println("Choix invalide");
+                    vueActivite.errorDecoration("Choix invalide");
             }
         }
 
     }
-    public void menuPersonne(ControleurActivity ctrl, Activity a) {
+
+
+    public void menuActivite() {
+
         int userChoice = 0;
-        while (userChoice != 4) {
+
+        while (userChoice != 5) {
+            System.out.println("""                                
+                1. Créer une activité.
+                2. Modifier une activité.
+                3. Supprimer une activité.
+                4. Prendre les présences.
+                5. Revenir au menu général. 
+                """);
+            userChoice = Integer.parseInt(input.read("Choix : "));
+            switch (userChoice) {
+                case 1:
+                    vueCalendrier.afficherCalendrier(calendrier);
+                    break;
+                case 2:
+                    Activity activity = new Activity();
+                    controleurActivity.setActivity(activity);
+                    controleurActivity.menuPersonne(activity);
+                    controleurActivity.validationActivite(activity, calendrier);
+                    break;
+                case 3:
+                    controleurCalendrier.supprimerActivite(calendrier);
+                    break;
+                case 4:
+                case 5:
+                    vueActivite.errorDecoration("En travaux");
+                    break;
+                case 6:
+                    break;
+                default:
+                    vueActivite.errorDecoration("Choix invalide");
+            }
+        }
+    }
+
+    public void menuStagiaires() {
+
+
+        int userChoice = 0;
+
+        while (userChoice != 5) {
             System.out.println("""
-                    
-                    1. Inscrire un participant à cette activité.
-                    2. Afficher la liste des participants.
-                    3. Retirer un participant.
-                    4. Valider la liste des participants.
-                    
+                    1. Voir la liste des stagiaires.
+                    2. Inscrire un nouveau stagiaire.
+                    3. Inscrire un stagiaire à un repas.
+                    4. Attribuer un logement à un stagiaire.
+                    5. Quitter.
                     """);
-            try {
-                userChoice = Integer.parseInt(input.read("Choix : "));
-                switch (userChoice) {
-                    case 1:
-                        ctrl.newPersonne(a);
-                        break;
-                    case 2:
-                        vueActivite.afficherListeParticipants(a);
-                        break;
-                    case 3:
-                        ctrl.retirerParticipant(a);
-                        break;
-                    case 4:
-                        break;
-                    default:
-                        System.err.println("Choix invalide");
-                }
-            } catch (Exception e) {
-                System.out.println("Choix invalide");
+            userChoice = Integer.parseInt(input.read("Choix : "));
+            switch (userChoice) {
+                case 1:
+                    vueCalendrier.afficherListeGlobale();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
             }
 
         }
     }
+
+
     public void sauvegarde() throws IOException, IOException {
         FileOutputStream fos = new FileOutputStream("calendrier.bin");
         ObjectOutputStream oos = new ObjectOutputStream(fos);

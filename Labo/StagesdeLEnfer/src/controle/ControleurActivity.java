@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ControleurActivity{
+public class ControleurActivity {
 
     private static ScannerInput input = new ScannerInput();
 
@@ -19,11 +19,15 @@ public class ControleurActivity{
     private Calendrier calendrier;
     VueActivite vueActivite = new VueActivite();
 
+    // Constructeur
+
+
+
     ControleurActivity(Calendrier cal) {
         this.calendrier = cal;
     }
 
-    private void setDate(Activity activity) {
+    public void setDate(Activity activity) {
         Boolean dateValid = false;
         while (!dateValid) {
             try {
@@ -35,7 +39,7 @@ public class ControleurActivity{
         }
     }
 
-    private void setDuration(Activity activity) {
+    public void setDuration(Activity activity) {
         Boolean durationValid = false;
         while (!durationValid) {
             try {
@@ -50,7 +54,7 @@ public class ControleurActivity{
 
     }
 
-    private void setName(Activity activity) {
+    public void setName(Activity activity) {
         Boolean nameValid = false;
         String regex = "^[a-zA-ZÀ-ÿ\\s]+$";
         Pattern pattern = Pattern.compile(regex);
@@ -105,10 +109,50 @@ public class ControleurActivity{
         activity.setEndTime();
     }
 
+    public void menuPersonne(Activity activity) {
+        int userChoice = 0;
+        while (userChoice != 5) {
+            System.out.println("""
+                                        
+                    1. Inscrire un participant à cette activité.
+                    2. Retirer un participant.
+                    3. Retirer tous les participants.
+                    4. Afficher la liste des participants.
+                    5. Valider la liste des participants.
+                                        
+                    """);
+            try {
+                userChoice = Integer.parseInt(input.read("Choix : "));
+                switch (userChoice) {
+                    case 1:
+                        newPersonne(activity);
+                        break;
+                    case 2:
+                        retirerParticipant(activity);
+                        break;
+                    case 3:
+                        viderListe(activity);
+                        break;
+                    case 4:
+                        vueActivite.afficherListeParticipants(activity);
+                        break;
+                    case 5:
+                        break;
+                    default:
+                        System.err.println("Choix invalide");
+                }
+            } catch (Exception e) {
+                System.out.println("Choix invalide");
+            }
+
+        }
+    }
+
     public void validationPersonne(Activity activity, Personne p) {
         Boolean validation = false;
         int userChoice = 0;
-        System.out.println("Inscrire "+p.getName()+" du club '"+p.getClubName()+"' ?");
+        String content = "Inscrire " + p.getName().toUpperCase() + " du club '" + p.getClubName().toUpperCase()+" à l'activité '"+activity.getNom()+"' ?";
+        vueActivite.textDecoration(content);
         System.out.println("""
                 1. Valider
                 2. Annuler""");
@@ -117,6 +161,8 @@ public class ControleurActivity{
             switch (userChoice) {
                 case 1:
                     activity.ajouterPersonneListe(p);
+                    p.ajouterActivite(activity);
+                    calendrier.ajouterPersonneListeGlobale(p);
                     validation = true;
                     break;
                 case 2:
@@ -129,7 +175,7 @@ public class ControleurActivity{
         }
     }
 
-    public void validationActivite(Activity activity,Calendrier calendrier) {
+    public void validationActivite(Activity activity, Calendrier calendrier) {
         Boolean validation = false;
         int userChoice = 0;
         System.out.println("Ces informations sont-elles correctes ?");
@@ -163,17 +209,42 @@ public class ControleurActivity{
 
     public void retirerParticipant(Activity activity) {
         vueActivite.afficherListeParticipants(activity);
-        int positionVoulue;
-        int positionActuelle = 0;
-        positionVoulue = Integer.parseInt(input.read("Numéro de la personne à retirer : "));
+        int positionActuelle = 1;
+        int positionVoulue = Integer.parseInt(input.read("Numéro de la personne à retirer : "));
         for (Personne p : activity.getListeParticipants()) {
             if (positionActuelle == positionVoulue) {
                 activity.retirerPersonneListe(p);
+                p.retirerActivite(activity);
                 break;
             }
             positionActuelle++;
         }
     }
+
+    public void viderListe(Activity activity) {
+        Boolean validation = false;
+        int userChoice = Integer.parseInt(input.read("""
+                Souhaitez-vous vraiment supprimer tous les participants de cette activité ?
+                1. Oui.
+                2. Non."""));
+        while (!validation) {
+            switch (userChoice) {
+                case 1:
+                    activity.viderListe();
+                    validation = true;
+                    break;
+                case 2:
+                    validation = true;
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+            }
+        }
+
+
+    }
+
+
 }
 
 

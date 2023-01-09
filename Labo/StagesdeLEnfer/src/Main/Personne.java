@@ -1,6 +1,9 @@
 package Main;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class Personne implements Serializable, Comparable<Personne> {
 
@@ -9,10 +12,36 @@ public class Personne implements Serializable, Comparable<Personne> {
     private String name = "";
     private String clubName = "";
 
+    private Set<Activity> listeActivites = new HashSet<>();
 
     // Comparateur
 
+    @Override
+    public int compareTo(Personne o) {
+        return this.getName().compareTo(o.getName());
+    }
 
+    // Equals et hashcode
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Personne personne = (Personne) o;
+        return name.equals(personne.name) && clubName.equals(personne.clubName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, clubName);
+    }
+
+    // toString
+
+    @Override
+    public String toString() {
+        return name;
+    }
 
     // Méthodes
 
@@ -32,13 +61,17 @@ public class Personne implements Serializable, Comparable<Personne> {
         return clubName;
     }
 
-    @Override
-    public String toString() {
-        return name;
+    public void ajouterActivite(Activity activity){
+        listeActivites.add(activity);
     }
 
-    @Override
-    public int compareTo(Personne o) {
-        return this.getName().compareTo(o.getName());
+    public void retirerActivite(Activity activity){
+        listeActivites.remove(activity);
     }
+
+
+
+
+
+
 }

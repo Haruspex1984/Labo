@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Activity implements Serializable {
@@ -64,6 +65,11 @@ public class Activity implements Serializable {
         participants++;
     }
 
+    public void viderListe(){
+        listeParticipants.clear();
+        participants = 0;
+    }
+
     public void retirerPersonneListe(Personne p){
         listeParticipants.remove(p);
         participants--;
@@ -73,7 +79,18 @@ public class Activity implements Serializable {
         return participants;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return getStartTime().equals(activity.getStartTime());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStartTime());
+    }
 }
 
 

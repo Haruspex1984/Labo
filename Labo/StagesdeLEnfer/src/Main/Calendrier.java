@@ -5,8 +5,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Calendrier implements Serializable {
+
+    //Variables
     private Map<LocalDateTime, Activity> calendrier = new TreeMap<>();
-    private Set<Personne> listeToutLeMonde = new TreeSet<>();
+    private Set<Personne> listeGlobale = new TreeSet<>();
+
+    // Méthodes
     public Map<LocalDateTime, Activity> getCalendrier() {
         return calendrier;
     }
@@ -18,12 +22,16 @@ public class Calendrier implements Serializable {
     public void supprimerActivite(Activity activity){
         calendrier.remove(activity.getStartTime());
     }
-    public void ajouterPersonneListe(Personne personne){
-        listeToutLeMonde.add(personne);
+
+    public Set<Personne> getListeGlobale(){
+        return listeGlobale;
+    }
+    public void ajouterPersonneListeGlobale(Personne personne){
+        listeGlobale.add(personne);
     }
 
     public void retirerPersonneListe(Personne p){
-        listeToutLeMonde.remove(p);
+        listeGlobale.remove(p);
     }
 
 }
