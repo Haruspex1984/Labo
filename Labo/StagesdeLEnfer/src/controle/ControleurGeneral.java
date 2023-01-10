@@ -13,7 +13,7 @@ public class ControleurGeneral implements Serializable {
     ControleurActivity controleurActivity = new ControleurActivity(calendrier);
     VueCalendrier vueCalendrier = new VueCalendrier(calendrier);
     VueActivite vueActivite = new VueActivite();
-    ControleurCalendrier controleurCalendrier = new ControleurCalendrier(vueCalendrier, calendrier,controleurActivity);
+    ControleurCalendrier controleurCalendrier = new ControleurCalendrier(vueCalendrier, calendrier, controleurActivity);
 
     public void menuGeneral() {
 
@@ -29,7 +29,7 @@ public class ControleurGeneral implements Serializable {
                     3. Charger la sauvegarde.
                     4. Sauvegarder et quitter.
                     5. Quitter.
-                    
+                                        
                     """);
             try {
                 userChoice = Integer.parseInt(input.read("Choix : "));
@@ -57,37 +57,52 @@ public class ControleurGeneral implements Serializable {
             }
         }
     }
+
     public void menuCalendrier() {
 
         int userChoice = 0;
         int id = 0;
 
-        while (userChoice != 5) {
+        while (userChoice != 6) {
             vueActivite.texteBleu("Calendrier des activités");
-            System.out.println("""
-                1. Afficher le calendrier.
-                2. Ajouter une activité.
-                3. Modifier une activité.
-                4. Supprimer une activité.
-                5. Revenir au menu général.
-                """);
+            if (!calendrier.getCalendrier().isEmpty()) {
+                System.out.println("""
+                        1. Afficher le calendrier.
+                        2. Afficher les détails d'une activité.
+                        3. Ajouter une activité.
+                        4. Modifier une activité.
+                        5. Supprimer une activité.
+                        6. Revenir au menu général.
+                        """);
+            } else {
+                vueActivite.texteRouge("1. Afficher le calendrier");
+                vueActivite.texteRouge("2. Afficher les détails d'une activité");
+                vueActivite.texteVert("3. Ajouter une activité.");
+                vueActivite.texteRouge("""
+                        4. Modifier une activité.
+                        5. Supprimer une activité.""");
+                vueActivite.texteBleu("6. Revenir au menu général.");
+            }
             userChoice = Integer.parseInt(input.read("Choix : "));
             switch (userChoice) {
                 case 1:
                     vueCalendrier.afficherCalendrier(calendrier);
                     break;
                 case 2:
+                    menuDetails(calendrier);
+                    break;
+                case 3:
                     Activity activity = new Activity();
                     controleurActivity.setActivity(activity);
                     controleurActivity.validationActivite(activity, calendrier);
                     break;
-                case 3:
+                case 4:
                     controleurCalendrier.modifierActivite(calendrier);
                     break;
-                case 4:
+                case 5:
                     controleurCalendrier.supprimerActivite(calendrier);
                     break;
-                case 5:
+                case 6:
                     break;
                 default:
                     vueActivite.errorDecoration("Choix invalide");
@@ -95,6 +110,7 @@ public class ControleurGeneral implements Serializable {
         }
 
     }
+
     public void menuStagiaires() {
 
         int userChoice = 0;
@@ -111,7 +127,6 @@ public class ControleurGeneral implements Serializable {
             userChoice = Integer.parseInt(input.read("Choix : "));
             switch (userChoice) {
                 case 1:
-                    System.out.println("Test");
                     vueCalendrier.afficherListeGlobale(calendrier);
                     break;
                 case 2:
@@ -126,6 +141,15 @@ public class ControleurGeneral implements Serializable {
 
         }
     }
+
+    public void menuDetails(Calendrier calendrier) {
+        vueCalendrier.afficherCalendrier(calendrier);
+        int id;
+        id = Integer.parseInt(input.read("De quelle activité voulez-vous les détails ? : "));
+        Activity activity = controleurCalendrier.getActivityById(id, calendrier);
+        vueActivite.afficherActivite(activity);
+    }
+
     public void sauvegarde() throws IOException, IOException {
         FileOutputStream fos = new FileOutputStream("calendrier.bin");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -134,6 +158,7 @@ public class ControleurGeneral implements Serializable {
         fos.close();
         vueActivite.texteVert("Calendrier sauvegardé.");
     }
+
     public Calendrier restauration() throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream("calendrier.bin");
         ObjectInputStream ois = new ObjectInputStream(fis);

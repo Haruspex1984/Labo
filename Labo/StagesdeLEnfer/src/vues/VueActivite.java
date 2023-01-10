@@ -28,13 +28,20 @@ public class VueActivite {
         System.out.println(result);
     }
 
+    public void texteGras(String message) {
+        String code = "\033[1m.\033[0m";
+        String result = code.replace(".", message);
+        System.out.println(result);
+    }
+
+
     public void afficherActivite(Activity activity) {
         System.out.println("");
-        System.out.println("Nom de l'activité : " + activity.getNom());
-        System.out.println("Date et heure du début de l'activité : " + activity.getStartTime().format(monFormateur));
-        System.out.println("Durée de l'activité : " + activity.getDuration() + " heure(s)");
-        System.out.println("Date et heure de fin de l'activité : " + activity.getEndTime().format(monFormateur));
-        System.out.println("Nombre de participants : " + activity.getParticipants());
+        texteGras("Nom de l'activité : " + activity.getNom());
+        texteGras("Date et heure du début de l'activité : " + activity.getStartTime().format(monFormateur));
+        texteGras("Durée de l'activité : " + activity.getDuration() + " heure(s)");
+        texteGras("Date et heure de fin de l'activité : " + activity.getEndTime().format(monFormateur));
+        texteGras("Nombre de participants : " + activity.getParticipants());
         afficherListeParticipants(activity);
         System.out.println("");
     }
@@ -49,7 +56,7 @@ public class VueActivite {
     }
 
     public void welcome() {
-        System.out.println("""
+        texteBleu("""
                                               _         __  __                                     __   ___ \s
                     /\\                       | |       |  \\/  |                                   /_ | / _ \\\s
                    /  \\   __ _  ___ _ __   __| | __ _  | \\  / | __ _ _ __   __ _  __ _  ___ _ __   | || | | |

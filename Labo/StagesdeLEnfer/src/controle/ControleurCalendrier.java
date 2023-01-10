@@ -24,6 +24,7 @@ public class ControleurCalendrier implements Serializable {
         this.calendrier = calendrier;
         this.controleurActivity = controleurActivity;
     }
+
     public void modifierActivite(Calendrier calendrier) {
         if (calendrier.getCalendrier().isEmpty()) {
             vue.errorDecoration("Le calendrier ne contient aucune activité");
@@ -91,6 +92,7 @@ public class ControleurCalendrier implements Serializable {
             }
         }
     }
+
     public void supprimerActivite(Calendrier calendrier) {
         Activity activity;
         int id;
@@ -104,6 +106,7 @@ public class ControleurCalendrier implements Serializable {
         }
 
     }
+
     public Activity getActivityById(int id, Calendrier calendrier) {
         Set<Map.Entry<LocalDateTime, Activity>> entries = calendrier.getCalendrier().entrySet();
         int positionVoulue = id;
@@ -119,30 +122,6 @@ public class ControleurCalendrier implements Serializable {
         return activity;
     }
 
-    public void calendrierDetails(Calendrier calendrier) {
-        int userChoice = 0;
-        vue.afficherCalendrier(calendrier);
-        while (userChoice != 2) {
-            System.out.println("""
-                    1. Afficher les détails.
-                    2. Revenir au menu.""");
-            userChoice = Integer.parseInt(input.read("Choix : "));
-            int id = 0;
-            switch (userChoice) {
-                case 1:
-                    id = Integer.parseInt(input.read("Numéro de l'activité : "));
-                    Activity activity = getActivityById(id, calendrier);
-                    vueActivite.afficherActivite(activity);
-                    break;
-                case 2:
-                    break;
-            }
-
-
-        }
-
-
-    }
 
 }
 
